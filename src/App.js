@@ -17,9 +17,18 @@ class BooksApp extends React.Component {
     books: []
   }
 
+  showSearchPage = () => {
+    this.setState({ showSearchPage: true })
+  }
+
+  showListPage = () => {
+    this.setState({ showSearchPage: false })
+  }
+
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      this.setState({ books: books });
+      console.log(books);
+      this.setState({ books });
     })
   }
 
@@ -27,12 +36,12 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <SearchBooks />
+          <SearchBooks showListPage={this.showListPage} />
         ) : (
         <div>
-          <ListBooks books={this.state.books} shelf='currentlyReading' />
-          <ListBooks books={this.state.books} shelf='wantToRead' />
-          <ListBooks books={this.state.books} shelf='read' />
+          <ListBooks books={this.state.books} shelf='currentlyReading' shelfName='Currently Reading' showSearchPage={this.showSearchPage} />
+          <ListBooks books={this.state.books} shelf='wantToRead' shelfName='Want to Read' showSearchPage={this.showSearchPage} />
+          <ListBooks books={this.state.books} shelf='read' shelfName='Read' showSearchPage={this.showSearchPage} />
         </div>
         )}
       </div>
