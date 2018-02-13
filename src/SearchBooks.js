@@ -1,12 +1,31 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import ListBooks from './ListBooks';
 
 class SearchBooks extends Component {
-  render() {
+  state = {
+    query: ''
+  }
+
+  filterBooks = (query) => {
+    this.setState({ query: query });
+  }
+
+  render () {
+    let filteredBooks;
+    if (this.state.query) {
+      let searchTerm = new RegExp(this.state.query, 'i');
+      filteredBooks = this.props.books.filter((book) => {
+        return searchTerm.test(book.title);
+      });
+    } else {
+      filteredBooks = this.props.books;
+    }
+
     return (
-      <div className="search-books">
-        <div className="search-books-bar">
-          <a className="close-search" onClick={() => this.props.showListPage()}>Close</a>
-          <div className="search-books-input-wrapper">
+      <div className='search-books'>
+        <div className='search-books-bar'>
+          <a className='close-search' onClick={() => this.props.showListPage()}>Close</a>
+          <div className='search-books-input-wrapper'>
             {/*
               NOTES: The search from BooksAPI is limited to a particular set of search terms.
               You can find these search terms here:
@@ -15,16 +34,22 @@ class SearchBooks extends Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author"/>
+            <input
+              type='text'
+              placeholder='Search by title or author'
+              onChange={(e) => this.filterBooks(e.target.value)} />
 
           </div>
         </div>
-        <div className="search-books-results">
-          <ol className="books-grid"></ol>
+        <div className='search-books-results'>
+          <ListBooks
+            books={filteredBooks}
+            changeShelf={this.props.changeShelf}
+          />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default SearchBooks
+export default SearchBooks;

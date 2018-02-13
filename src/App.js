@@ -2,7 +2,7 @@ import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
 import SearchBooks from './SearchBooks'
-import ListBooks from './ListBooks'
+import MyReads from './MyReads'
 import * as BooksAPI from './BooksAPI'
 
 class BooksApp extends React.Component {
@@ -14,7 +14,21 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    books: []
+    books: [],
+    shelves: [
+      {
+        shelf: 'currentlyReading',
+        shelfName: 'Currently Reading'
+      },
+      {
+        shelf: 'wantToRead',
+        shelfName: 'Want to Read'
+      },
+      {
+        shelf: 'read',
+        shelfName: 'Read'
+      }
+    ]
   }
 
   showSearchPage = () => {
@@ -23,6 +37,16 @@ class BooksApp extends React.Component {
 
   showListPage = () => {
     this.setState({ showSearchPage: false })
+  }
+
+  changeShelf = (book, shelf) => {
+    let updatedBooks = this.state.books.map((bk) => {
+      if (book.id === bk.id) {
+        bk.shelf = shelf;
+      }
+      return bk;
+    });
+    this.setState({ books: updatedBooks });
   }
 
   componentDidMount() {
@@ -36,12 +60,19 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <SearchBooks showListPage={this.showListPage} />
+          <SearchBooks
+            showListPage={this.showListPage}
+            books={this.state.books}
+            changeShelf={this.changeShelf}
+          />
         ) : (
         <div>
-          <ListBooks books={this.state.books} shelf='currentlyReading' shelfName='Currently Reading' showSearchPage={this.showSearchPage} />
-          <ListBooks books={this.state.books} shelf='wantToRead' shelfName='Want to Read' showSearchPage={this.showSearchPage} />
-          <ListBooks books={this.state.books} shelf='read' shelfName='Read' showSearchPage={this.showSearchPage} />
+          <MyReads
+            shelves={this.state.shelves}
+            books={this.state.books}
+            showSearchPage={this.showSearchPage}
+            changeShelf={this.changeShelf}
+          />
         </div>
         )}
       </div>
