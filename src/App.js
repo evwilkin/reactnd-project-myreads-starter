@@ -4,6 +4,7 @@ import './App.css'
 import SearchBooks from './SearchBooks'
 import MyReads from './MyReads'
 import * as BooksAPI from './BooksAPI'
+import { Route } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
@@ -59,25 +60,47 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <SearchBooks
-            showListPage={this.showListPage}
-            books={this.state.books}
-            changeShelf={this.changeShelf}
-          />
-        ) : (
-        <div>
-          <MyReads
-            shelves={this.state.shelves}
-            books={this.state.books}
-            showSearchPage={this.showSearchPage}
-            changeShelf={this.changeShelf}
-          />
-        </div>
-        )}
+        <Route
+          exact path='/'
+          render={() => (
+            <MyReads
+              shelves={this.state.shelves}
+              books={this.state.books}
+              showSearchPage={this.showSearchPage}
+              changeShelf={this.changeShelf}
+            />
+          )}
+        />
+        <Route
+          path='/search'
+          render={() => (
+            <SearchBooks
+              showListPage={this.showListPage}
+              books={this.state.books}
+              changeShelf={this.changeShelf}
+            />
+          )}
+        />
       </div>
     )
   }
 }
 
 export default BooksApp
+
+// {this.state.showSearchPage ? (
+//   <SearchBooks
+//     showListPage={this.showListPage}
+//     books={this.state.books}
+//     changeShelf={this.changeShelf}
+//   />
+// ) : (
+// <div>
+//   <MyReads
+//     shelves={this.state.shelves}
+//     books={this.state.books}
+//     showSearchPage={this.showSearchPage}
+//     changeShelf={this.changeShelf}
+//   />
+// </div>
+// )}
