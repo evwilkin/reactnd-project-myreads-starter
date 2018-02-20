@@ -15,7 +15,7 @@ class ListBooks extends Component {
                 }} />
                 <div className='book-shelf-changer'>
                   <select
-                    defaultValue={book.shelf}
+                    defaultValue={book.shelf || 'none'}
                     onChange={(e) => this.props.changeShelf(book, e.target.value)}
                   >
                     <option value='none' disabled>Move to...</option>

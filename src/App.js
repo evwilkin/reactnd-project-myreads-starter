@@ -41,20 +41,30 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(() => {
-      let updatedBooks = this.state.books.map((bk) => {
-        if (book.id === bk.id) {
-          bk.shelf = shelf;
-        }
-        return bk;
-      });
-      this.setState({ books: updatedBooks });
+    BooksAPI.update(book, shelf).then((res) => {
+      // If book already on a shelf, update shelf
+      if (this.state.books.some((bk) => bk.id === book.id)) {
+        let updatedBooks = this.state.books.map((bk) => {
+          if (bk.id === book.id) {
+            bk.shelf = shelf;
+          }
+          return bk;
+        });
+        this.setState({ books: updatedBooks });
+      // Else add book & assign shelf
+      } else {
+        BooksAPI.get(book.id).then((res) => {
+          let updatedBooks = this.state.books.slice();
+          updatedBooks.push(res);
+          this.setState({books: updatedBooks});
+        })
+      }
+      // )
     })
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      console.log(books);
       this.setState({ books });
     })
   }

@@ -10,11 +10,19 @@ class SearchBooks extends Component {
 
   filterBooks = (query) => {
     if (query) {
-      BooksAPI.search(query).then((books) => {
-        if (books) {
-          this.setState({ books });
+      BooksAPI.search(query).then((results) => {
+        if (results) {
+          results.forEach((result) => {
+            for (var book in this.props.books) {
+              if (result.id === this.props.books[book].id) {
+                result.shelf = this.props.books[book].shelf;
+              }
+            }
+            return results;
+          });
+          this.setState({books: results});
         } else {
-          this.setState({ books: [] });
+          this.setState({books: []})
         }
       });
     } else {
