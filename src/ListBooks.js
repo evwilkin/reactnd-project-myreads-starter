@@ -27,7 +27,8 @@ class ListBooks extends Component {
                 </div>
               </div>
               <div className='book-title'>{book.title}</div>
-              {book.authors.map((author, idx) => {
+              {/* Confirm authors array exists before mapping through it */}
+              {book.authors && book.authors.map((author, idx) => {
                 return <div key={idx} className='book-authors'>{author}</div>;
               })}
             </div>

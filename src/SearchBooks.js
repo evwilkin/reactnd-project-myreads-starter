@@ -45,10 +45,12 @@ class SearchBooks extends Component {
             </div>
           </div>
           <div className='search-books-results'>
-            <ListBooks
-              books={this.state.books}
-              changeShelf={this.props.changeShelf}
-            />
+            {this.state.books && (
+              <ListBooks
+                books={this.state.books}
+                changeShelf={this.props.changeShelf}
+              />
+            )}
           </div>
         </div>
       )

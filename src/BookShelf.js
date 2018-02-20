@@ -15,9 +15,11 @@ class BookShelf extends Component {
           <div className='bookshelf'>
             <h2 className='bookshelf-title'>{this.props.shelfName}</h2>
             <div className='bookshelf-books'>
-              <ListBooks
-                books={shelfBooks}
-                changeShelf={this.props.changeShelf} />
+              {shelfBooks && (
+                <ListBooks
+                  books={shelfBooks}
+                  changeShelf={this.props.changeShelf} />
+              )}
             </div>
           </div>
         </div>
