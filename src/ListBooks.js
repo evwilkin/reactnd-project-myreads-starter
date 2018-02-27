@@ -8,10 +8,13 @@ class ListBooks extends Component {
           <li key={book.id}>
             <div className='book'>
               <div className='book-top'>
-                <div className='book-cover' style={{
+                <div className='book-cover' alt={`${book.title} book cover`} style={{
                   width: 128,
                   height: 193,
-                  backgroundImage: `url(${book.imageLinks.thumbnail})`
+                  // Confirm book has images & thumbnail otherwise backgroundImage blank
+                  backgroundImage: (
+                    book.hasOwnProperty('imageLinks') && book.imageLinks.hasOwnProperty('thumbnail')
+                  ) ? `url(${book.imageLinks.thumbnail})` : ''
                 }} />
                 <div className='book-shelf-changer'>
                   <select
