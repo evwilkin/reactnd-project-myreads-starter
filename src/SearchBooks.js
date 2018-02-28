@@ -5,7 +5,8 @@ import * as BooksAPI from './BooksAPI';
 
 class SearchBooks extends Component {
   state = {
-    books: []
+    books: [],
+    query: ''
   }
 
   filterBooks = (query) => {
@@ -21,39 +22,58 @@ class SearchBooks extends Component {
             }
             return results;
           });
-          this.setState({books: results});
+          this.setState({
+            books: results,
+            query: query
+          });
         } else {
-          this.setState({books: []})
+          this.setState({
+            books: [],
+            query: query
+          });
         }
       });
     } else {
-      this.setState({books: []});
+      this.setState({
+        books: [],
+        query: ''
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    /* Fix for state not finished updating before page renders when search input is cleared quickly */
+    let searchTerm = document.querySelector('.search-books-input-wrapper > input').value;
+    if (this.state.query !== searchTerm) {
+      this.setState({ query: searchTerm });
     }
   }
 
   render () {
     return (
-      this.state.books && (
-        <div className='search-books'>
-          <div className='search-books-bar'>
-            <Link to='/' className='close-search' />
-            <div className='search-books-input-wrapper'>
-              <input autoFocus
-                type='text'
-                placeholder='Search by title or author'
-                onChange={(e) => this.filterBooks(e.target.value)} />
-            </div>
-          </div>
-          <div className='search-books-results'>
-            {this.state.books && (
-              <ListBooks
-                books={this.state.books}
-                changeShelf={this.props.changeShelf}
-              />
-            )}
+      <div className='search-books'>
+        <div className='search-books-bar'>
+          <Link to='/' className='close-search' />
+          <div className='search-books-input-wrapper'>
+            <input autoFocus
+              type='text'
+              placeholder='Search by title or author'
+              onChange={(e) => this.filterBooks(e.target.value)} />
           </div>
         </div>
-      )
+        {/* Only load below if a search input is not blank */}
+        {this.state.query.length !== 0 && (
+          <div className='search-books-results'>
+            {this.state.books.length !== 0 ? (
+              <ListBooks
+                books={this.state.books}
+                changeShelf={this.props.changeShelf} />
+            ) : (
+              <p>No results found, please try another search</p>
+            )}
+          </div>
+        )}
+      </div>
     );
   }
 }
