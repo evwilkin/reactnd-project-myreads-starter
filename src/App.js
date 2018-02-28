@@ -92,21 +92,4 @@ class BooksApp extends React.Component {
   }
 }
 
-export default BooksApp
-
-// {this.state.showSearchPage ? (
-//   <SearchBooks
-//     showListPage={this.showListPage}
-//     books={this.state.books}
-//     changeShelf={this.changeShelf}
-//   />
-// ) : (
-// <div>
-//   <MyReads
-//     shelves={this.state.shelves}
-//     books={this.state.books}
-//     showSearchPage={this.showSearchPage}
-//     changeShelf={this.changeShelf}
-//   />
-// </div>
-// )}
+export default BooksApp;
