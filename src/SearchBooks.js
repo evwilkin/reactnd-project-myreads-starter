@@ -15,11 +15,11 @@ class SearchBooks extends Component {
         if (results && !results.error) {
           results.forEach((result) => {
             // Check each book against existing shelves & assign shelf as needed
-            for (var book in this.props.books) {
-              if (result.id === this.props.books[book].id) {
-                result.shelf = this.props.books[book].shelf;
+            this.props.books.forEach((book) => {
+              if (result.id === book.id) {
+                result.shelf = book.shelf;
               }
-            }
+            });
             return results;
           });
           this.setState({
